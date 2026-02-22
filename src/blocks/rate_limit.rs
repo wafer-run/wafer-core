@@ -19,7 +19,7 @@ struct RateBucket {
 impl RateLimitBlock {
     pub fn new() -> Self {
         Self {
-            max_requests: 100,
+            max_requests: 1000,
             window: Duration::from_secs(60),
             buckets: Mutex::new(HashMap::new()),
         }

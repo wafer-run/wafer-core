@@ -53,8 +53,8 @@ impl Block for SecurityHeadersBlock {
 
     fn lifecycle(
         &self,
-        ctx: &dyn Context,
-        event: LifecycleEvent,
+        _ctx: &dyn Context,
+        _event: LifecycleEvent,
     ) -> std::result::Result<(), WaferError> {
         Ok(())
     }
