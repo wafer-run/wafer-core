@@ -1,0 +1,18 @@
+[package]
+name = "wafer-core"
+version = "0.1.0"
+edition = "2021"
+description = "Shared reusable WAFER blocks and chain templates"
+license = "MIT"
+
+[dependencies]
+wafer-run = { path = "../wafer", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+parking_lot = "0.12"
+chrono = { version = "0.4", features = ["serde"] }
+tracing = "0.1"
+
+[lib]
+name = "wafer_core"
+path = "src/lib.rs"
