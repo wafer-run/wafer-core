@@ -49,11 +49,15 @@ impl Block for CorsBlock {
 
         // Set CORS headers on the message meta (bridge will apply them)
         let origin = msg.header("Origin").to_string();
+        let mut credentials = false;
         if !origin.is_empty() {
             if origins == "*" {
+                // Wildcard: reflect origin but credentials MUST stay false per spec
                 msg.set_meta("resp.header.Access-Control-Allow-Origin", &origin);
             } else if origins.split(',').any(|o| o.trim() == origin) {
+                // Origin explicitly in allowlist: safe to enable credentials
                 msg.set_meta("resp.header.Access-Control-Allow-Origin", &origin);
+                credentials = true;
             }
         } else {
             msg.set_meta("resp.header.Access-Control-Allow-Origin", &origins);
@@ -61,7 +65,9 @@ impl Block for CorsBlock {
 
         msg.set_meta("resp.header.Access-Control-Allow-Methods", &methods);
         msg.set_meta("resp.header.Access-Control-Allow-Headers", &headers);
-        msg.set_meta("resp.header.Access-Control-Allow-Credentials", "true");
+        if credentials {
+            msg.set_meta("resp.header.Access-Control-Allow-Credentials", "true");
+        }
         msg.set_meta("resp.header.Access-Control-Max-Age", &self.max_age);
 
         // Handle OPTIONS preflight

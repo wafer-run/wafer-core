@@ -53,7 +53,12 @@ impl Block for RateLimitBlock {
 
         let client_ip = msg.remote_addr().to_string();
         if client_ip.is_empty() {
-            return msg.clone().cont();
+            return error(
+                msg.clone(),
+                400,
+                "bad_request",
+                "Client IP could not be determined",
+            );
         }
 
         let mut buckets = self.buckets.lock();
